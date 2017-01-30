@@ -1,7 +1,12 @@
 # CPS-206
-For assignments and labs
-NOTES for cps 206
 e.printstack
-git add.
-git commit-am  "message" 
+command line - github
+go to your new repository
+clone, download
+copy HTPPS url
+go to command line 
+paste url 
+open readme from atom when done editing you must save it 
+git add . 
+git commit-am  " message " 
 git push
