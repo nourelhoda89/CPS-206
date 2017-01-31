@@ -1,5 +1,6 @@
 
-## Class Notes 1/30/2017
+#Class Notes 
+## 1/30/2017
 
 e.printstack
 
@@ -43,6 +44,8 @@ class Example{
   }
   
 ```
+##1/31/2017
+
 ```java
 import java.util.*;
 public class GenericClass{
