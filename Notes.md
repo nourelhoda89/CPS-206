@@ -17,11 +17,11 @@ paste url
 
 open readme from atom when done editing you must save it 
 
-open repository
+open repository from command line 
 
 git add . 
 
-git commit-am  " message " 
+git commit -am  " message " 
 
 git push.
 
