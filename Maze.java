@@ -9,7 +9,7 @@
 import java.io.*;
 import java.util.*;
  
-public class maze{
+public class Maze{
    final static int NUM_ROW =7,
                     NUM_COL = 31;
    static char player = 'p',
