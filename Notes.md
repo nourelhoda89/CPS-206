@@ -83,6 +83,7 @@ public class GenericClass{
 }
 ```
 ##2/1/2017
+## merge
 
 git clone https:....
 (copy repository url)
@@ -101,3 +102,15 @@ ITERATORS
 Hashing
 Mapping
 HashMap
+```java
+public class IteratorsAndArrays {
+
+  public static void main(String[] args) {
+    HashMap<String,String>numbers = new HashMap<>();
+    numbers.put("one","two");
+    numbers.put("two","three");
+    numbers.get(1);
+
+  }
+}
+```
