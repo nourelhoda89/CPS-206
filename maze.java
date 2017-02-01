@@ -10,7 +10,7 @@ import java.io.*;
 import java.util.*;
  
 public class maze{
-   final static int NUM_ROW = 7,
+   final static int NUM_ROW =7,
                     NUM_COL = 31;
    static char player = 'p',
                 clear = ' ',
@@ -18,49 +18,36 @@ public class maze{
                 finalPoint = 'f'; 
    static int xLoc = 1, 
               yLoc = 1;         
-   public static void main(String[] args)throws Exception{
-      
+   public static void main(String... args)throws Exception{
+      String fileName;
+    
+   // ArrayList<ArrayList<char>> mazeArray = new ArrayList<ArrayList<char>>(); 
       char[][] mazeArray = new char[NUM_ROW][NUM_COL];
        
-      char again = 'Y';
-      if(args.length < 1) {
-         System.err.println("Usage: java maze <file name>");
-         System.exit(1);
+      if(args.length == 0){
+         fileName= "maze.txt";
       }
-      String fileName = args[0]; 
-   
-      Scanner keyboard = new Scanner(System.in);
-   
-      do{
-      
-      //Prompt user
-         System.out.println("\n\n Welcome to The Maze!!!\n\n");
-                            
-         readFile(mazeArray, fileName);
-         placePlayer(mazeArray);
-       
-        /* 
-      //test to see maze
-         for (int row = 0; row < NUM_ROW; row++){
-            System.out.println();
-           
-            for (int col = 0; col < NUM_COL; col++) {
-               System.out.print(mazeArray[row][col]);
-               while (col == NUM_COL )
-                  System.out.println();
-            }
-         }
-         */
+      else { fileName = args[0];
+      }
          
-         play(mazeArray);
+      readFile(mazeArray, fileName);
+      placePlayer(mazeArray);
        
-         System.out.println("\n Would you like to play again?(Y/N)");
-         again = keyboard.nextLine().charAt(0);
-         again = Character.toUpperCase(again);
+      //test to see maze
+      for (int row = 0; row < mazeArray.size(); row++){
+         System.out.println();
+           
+         for (int col = 0; col < mazeArray.size(); col++) {
+            System.out.print(mazeArray[row][col]);
+            while (col == mazeArray.size() )
+               System.out.println();
+         }
+      }
+        
+         
+      play(mazeArray);
              
-      } while (again == 'Y'); //end of do while loop
    }//end of main method
-  
    public static void readFile(char[][] mazeArray, String fileName) throws Exception {
    
       String line;   
@@ -84,18 +71,17 @@ public class maze{
       catch(FileNotFoundException exception){
          throw exception;
       } 
+      System.out.println("\n\n Welcome to The Maze!!!\n\n");
    }//end read file
       
    public static void placePlayer(char[][] mazeArray) throws IOException{
-   
-      Random randomNumbers = new Random();
-      xLoc = randomNumbers.nextInt(NUM_ROW);
-      yLoc = randomNumbers.nextInt(NUM_COL);
-   
-      while (mazeArray[xLoc][yLoc]== wall || mazeArray[xLoc][yLoc] == finalPoint){
+      int counter = 0;//to insure this is not an infinit loop,in case there were no free areas in the maze. 
+      do{
+         counter++; 
+         Random randomNumbers = new Random(); 
          xLoc = randomNumbers.nextInt(NUM_ROW);
          yLoc = randomNumbers.nextInt(NUM_COL);   
-      }
+      }while (mazeArray[xLoc][yLoc]== wall || mazeArray[xLoc][yLoc]== finalPoint || counter < 1000);
       //assign letter p to a random location in the array
       mazeArray[xLoc][yLoc]= player;
    }//end of placePlayer method
@@ -104,10 +90,10 @@ public class maze{
       Scanner keyboard = new Scanner(System.in);
       boolean finish = false;
       int  numberOfSteps = 0;
-      String history = "\nHere is your history:  ";
+     ArrayList<String> history = new ArrayList<>();      
       do{
                   
-         System.out.println(" \nWhat is your next move? \nyou can enter history to see your previous steps.");
+         System.out.println(" \n\nWhat is your next move? \n(you can enter history to see your previous steps).");
       //check for open tiles
         
          if (mazeArray[xLoc][yLoc +1]== clear || mazeArray[xLoc][yLoc +1]== finalPoint ){
@@ -128,63 +114,79 @@ public class maze{
          switch (move){
          
             case  ("right"):
-               if (mazeArray[xLoc][yLoc+1]== finalPoint){
-                  numberOfSteps ++;
-                  System.out.println("\n Congratulation! you solved the maze in " +numberOfSteps+" steps.");
-                  finish=true ;
+               if (mazeArray[xLoc][yLoc+1]!= wall){
+                  if (mazeArray[xLoc][yLoc+1]== finalPoint){
+                     numberOfSteps ++;
+                     System.out.println("\n Congratulation! you solved the maze in " +numberOfSteps+" steps.");
+                     finish=true ;
+                  }
+                  else {
+                     yLoc++;
+                     player = mazeArray[xLoc][yLoc+1];
+                     numberOfSteps ++;
+                     history.add( "right");
+                  }
                }
-               else {
-                  yLoc++;
-                  player = mazeArray[xLoc][yLoc];
-                  numberOfSteps ++;
-                  history += "right,";
-               }
+               else
+               {System.out.println("This direction is not available");}
                break;
             case ( "left"):
-               if (mazeArray[xLoc][yLoc-1]== finalPoint){
-                  numberOfSteps ++;
-                  System.out.println("\n Congratulation! you solved the maze in " +numberOfSteps+" steps.");
-                  finish=true ;
+               if (mazeArray[xLoc][yLoc-1]!= wall){
+               
+                  if (mazeArray[xLoc][yLoc-1]== finalPoint){
+                     numberOfSteps ++;
+                     System.out.println("\n Congratulation! you solved the maze in " +numberOfSteps+" steps.");
+                     finish=true ;
+                  }
+                  else {
+                     yLoc--;
+                     player = mazeArray[xLoc][yLoc-1];
+                     numberOfSteps ++;
+                      history.add( " left");
+                  }
                }
-               else {
-                  yLoc--;
-                  player = mazeArray[xLoc][yLoc];
-                  numberOfSteps ++;
-                  history += " left, ";
-               }
+               else
+               {System.out.println("This direction is not available");}
                break;
             case  ("up"):
-               if (mazeArray[xLoc -1][yLoc]== finalPoint){
-                  numberOfSteps ++;
-                  System.out.println("\n Congratulation! you solved the maze in " +numberOfSteps+" steps.");
-                  finish=true ;
+               if (mazeArray[xLoc-1][yLoc]!= wall){
+                  if (mazeArray[xLoc -1][yLoc]== finalPoint){
+                     numberOfSteps ++;
+                     System.out.println("\n Congratulation! you solved the maze in " +numberOfSteps+" steps.");
+                     finish=true ;
+                  }
+                  else {
+                     xLoc--;
+                     player = mazeArray[xLoc-1][yLoc];
+                     numberOfSteps ++;
+                       history.add( " up");
+                  }
                }
-               else {
-                  xLoc--;
-                  player = mazeArray[xLoc][yLoc];
-                  numberOfSteps ++;
-                  history += "up,";
-               }
+               else
+               {System.out.println("This direction is not available");}
                break;
             case ("down"):
-               if (mazeArray[xLoc+ 1][yLoc]== finalPoint){
-                  numberOfSteps ++;
-                  System.out.println("\n Congratulation! you solved the maze in " +numberOfSteps+ " steps.");
-                  finish = true ;
+               if (mazeArray[xLoc+1][yLoc]!= wall){
+                  if (mazeArray[xLoc+ 1][yLoc]== finalPoint){
+                     numberOfSteps ++;
+                     System.out.println("\n Congratulation! you solved the maze in " +numberOfSteps+ " steps.");
+                     finish = true ;
+                  }
+                  else {
+                     xLoc++;
+                     player = mazeArray[xLoc+1][yLoc];
+                     numberOfSteps ++;
+                      history.add( " down");                  }
                }
-               else {
-                  xLoc++;
-                  player = mazeArray[xLoc][yLoc];
-                  numberOfSteps ++;
-                  history += "down, ";
-               }
+               else
+               {System.out.println("This direction is not available");}
                break;
             case ("history"):
                System.out.println(history);
                break;
             default :
             
-               System.out.println("\n Invalid data");
+               System.out.println("\n please choose one of the options above");
          }
         
       }while( !finish );
