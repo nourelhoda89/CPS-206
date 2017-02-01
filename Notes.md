@@ -84,10 +84,16 @@ public class GenericClass{
 ```
 ##2/1/2017
 
-git clone https:....(copy repository url)
+git clone https:....
+(copy repository url)
 cd (your rep)
 git checkout-b class notes
 open editor make sure to do your work in your repository path 
+git add .
+git commit -am "..."
+git checkout master
+git merge class-notes
+git push
 
 Topics: 
 ITERATORS
