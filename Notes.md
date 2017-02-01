@@ -85,23 +85,23 @@ public class GenericClass{
 ##2/1/2017
 ## merge
 
-git clone https:....
-(copy repository url)
-cd (your rep)
-git checkout-b class notes
-open editor make sure to do your work in your repository path 
-git add .
-git commit -am "..."
+git clone https:.... -
+(copy repository url) -
+cd (your rep) -
+git checkout-b class notes -
+open editor make sure to do your work in your repository path -
+git add . -
+git commit -am "..." -
 git checkout master
-git merge class-notes
+git merge class-notes -
 git push
 
 Topics: 
-ITERATORS
-2d ARRAYlIST
-Hashing
-Mapping
-HashMap
+Iterators,
+2d ArrayList,
+Hashing,
+Mapping,
+HashMap.
 ```java
 public class IteratorsAndArrays {
 
