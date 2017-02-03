@@ -1,8 +1,14 @@
 create a prototype
+
 create empty methods
+
 start at the top
+
 first method: check the possibilities ex: startCar(decompose it into two method 
+
+```java
 public class Cars (String...args){
+
 public void drive(){
 
 //call the method needed
@@ -24,6 +30,7 @@ StartFobCar()
 StartKeyCar()             
 
 }
+```
 for unit testing 
 creat a class CarTest{
 testMethods[]
