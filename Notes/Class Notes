@@ -1,5 +1,5 @@
 
-#Class Notes 
+#Class Notes
 ## 1/30/2017
 
 e.printstack
@@ -12,19 +12,23 @@ clone, download
 
 copy HTPPS url
 
-go to command line 
+go to command line
 
-paste url 
+paste url
 
-open readme from atom when done editing you must save it 
+open readme from atom when done editing you must save it
 
-open repository from command line 
+open repository from command line
 
-git add . 
+git add .
 
-git commit -am  " message " 
+git commit -am  " message "
 
 git push.
+
+mkdir
+
+cd..\ go up one dir
 
 
 ## Markdown Practice
@@ -36,13 +40,13 @@ Strikethrough uses two tildes ~~Scratch this~~ .
 Block of code
 
 throw exeption whenever you are not in the driver
-```java 
+```java
 class Example{
      public String methodName(String string){
        if(string == null) throw new NullPointerException();
      }
   }
-  
+
 ```
 ##1/31/2017
 
@@ -59,9 +63,9 @@ public class GenericClass{
        System.out.println(list.contains(" Kulis"));//  false
        System.out.println(list.contains("Farhat "));//false
        System.out.println(list.contains("Nour "));//true
-       
-       
-       
+
+
+
       Iterator <string> iterator =list.iterator();
      while(iterator.hasNext()){
      System.out.println(iterator.next());
@@ -96,7 +100,7 @@ git checkout master
 git merge class-notes -
 git push
 
-Topics: 
+Topics:
 Iterators,
 2d ArrayList,
 Hashing,
