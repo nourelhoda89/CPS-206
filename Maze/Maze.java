@@ -9,7 +9,7 @@ import java.util.*;
 //import java.awt.event.KeyEvent;
 
 public class Maze{
-   final static int NUM_ROW = 7, //need to hande size for diff files
+   final static int NUM_ROW = 7, //need to handel size for diff files
                     NUM_COL = 31;
    static char player = 'p',
                 clear = ' ',
@@ -17,6 +17,8 @@ public class Maze{
                 finalPoint = 'f';
    static int yLoc = 1,
               xLoc = 1;
+   static int  numberOfSteps = 0;
+   static ArrayList<String> history = new ArrayList<>();
    public static void main(String... args)throws Exception{
       String fileName;
    
@@ -45,7 +47,7 @@ public class Maze{
       play(mazeArray);
    
    }//end of main method
-   
+
    public static void readFile(char[][] mazeArray, String fileName) throws Exception {
    
       String line;
@@ -87,24 +89,22 @@ public class Maze{
    public static void play(char[][] mazeArray) throws IOException{
       Scanner keyboard = new Scanner(System.in);
       boolean finish = false;
-      int  numberOfSteps = 0;
-      ArrayList<String> history = new ArrayList<>();
-      do{
-      
+      while (!finish){
+         
          System.out.println(" \n\nWhat is your next move? \n(you can enter history to see your previous steps).");
       //check for open tiles
       
          if (mazeArray[yLoc][xLoc +1]== clear || mazeArray[yLoc][xLoc +1]== finalPoint ){
-            System.out.println("right   ");
+            System.out.println("right");
          }
          if (mazeArray[yLoc][xLoc -1]== clear || mazeArray[yLoc][xLoc -1]== finalPoint ){
-            System.out.println("left  ");
+            System.out.println("left");
          }
          if (mazeArray[yLoc - 1][xLoc]== clear || mazeArray[yLoc -1][xLoc]== finalPoint ){
-            System.out.println("up   ");
+            System.out.println("up");
          }
          if (mazeArray[yLoc + 1][xLoc]== clear || mazeArray[yLoc+1][xLoc]== finalPoint ){
-            System.out.println("down  ");
+            System.out.println("down");
          }
          String move = keyboard.nextLine();
          move.toLowerCase();
@@ -114,76 +114,111 @@ public class Maze{
             case  ("right"):
                if (mazeArray[yLoc][xLoc+1]!= wall){
                   if (mazeArray[yLoc][xLoc+1]== finalPoint){
-                     finish=ifFinished ( numberOfSteps);
+                     finish= ifFinished ();
                   }
                   else {
-                     xLoc++;
-                     player = mazeArray[yLoc][xLoc+1];
-                     numberOfSteps ++;
-                     history.add( "right");
+                     xLoc = right(mazeArray); 
                   }
                }
-               else
-               {System.out.println("This direction is not available");}
+               else{
+                  System.out.println("This direction is not available");
+               }
                break;
+               
             case ( "left"):
                if (mazeArray[yLoc][xLoc-1]!= wall){
                
                   if (mazeArray[yLoc][xLoc-1]== finalPoint){
-                     finish= ifFinished ( numberOfSteps);
+                     finish= ifFinished ();
                   }
                   else {
-                     xLoc--;
-                     player = mazeArray[yLoc][xLoc-1];
-                     numberOfSteps ++;
-                     history.add( " left");
+                     xLoc = left(mazeArray);
                   }
                }
                else
                {System.out.println("This direction is not available");}
                break;
+               
             case  ("up"):
                if (mazeArray[yLoc-1][xLoc]!= wall){
                   if (mazeArray[yLoc -1][xLoc]== finalPoint){
-                     finish= ifFinished ( numberOfSteps);
+                     finish= ifFinished ();
                   }
                   else {
-                     yLoc--;
-                     player = mazeArray[yLoc-1][xLoc];
-                     numberOfSteps ++;
-                     history.add( " up");
+                     yLoc = up(mazeArray);
                   }
                }
-               else
-               {System.out.println("This direction is not available");}
+               else{
+               
+                  System.out.println("This direction is not available");}
                break;
+               
             case ("down"):
                if (mazeArray[yLoc+1][xLoc]!= wall){
                   if (mazeArray[yLoc+ 1][xLoc]== finalPoint){
-                     finish = ifFinished ( numberOfSteps);
+                     finish = ifFinished ();
                   }
                   else {
-                     yLoc++;
-                     player = mazeArray[yLoc+1][xLoc];
-                     numberOfSteps ++;
-                     history.add( " down");                  }
+                     yLoc = down( mazeArray);
+                  }
                }
-               else
-               {System.out.println("This direction is not available");}
+               else{
+                  System.out.println("This direction is not available");}
                break;
+              
             case ("history"):
                System.out.println(history);
                break;
+               
             default :
-            
                System.out.println("\n please choose one of the options above");
+         
          }
-      
-      }while( !finish);
+      }
    }//end play method
-
-   public static boolean ifFinished (int numberOfSteps){
+   
+   public static int right(char[][] mazeArray){
+      
+      mazeArray[yLoc][xLoc]= clear ;
+      player = mazeArray[yLoc][xLoc+1];
       numberOfSteps ++;
+      history.add("right");
+      xLoc++;
+      return xLoc;
+      
+   }
+   public static int left(char[][] mazeArray){
+     
+      mazeArray[yLoc][xLoc]=clear;
+      player = mazeArray[yLoc][xLoc-1];
+      numberOfSteps++;
+      history.add( "left");
+      xLoc--;
+      return xLoc;
+      
+   }
+   public static int up (char[][] mazeArray){
+      
+      mazeArray[yLoc][xLoc]=clear;
+      player = mazeArray[yLoc-1][xLoc];
+      numberOfSteps++;
+      history.add( "up ");
+      yLoc--;
+      return yLoc;
+     
+   }
+   public static  int down(char[][] mazeArray){
+      
+      player = mazeArray[yLoc+1][xLoc];
+      numberOfSteps++;
+      mazeArray[yLoc][xLoc]=clear;
+      history.add("down");
+      yLoc++;
+      return yLoc;
+      
+   }
+   public static boolean ifFinished (){
+      numberOfSteps++;
       System.out.println("\n Congratulation! you solved the maze in " +numberOfSteps+" steps.");
       boolean finish=true;
       return finish ;
