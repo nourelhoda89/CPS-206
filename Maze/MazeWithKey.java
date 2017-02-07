@@ -34,8 +34,7 @@ public class MazeWithKey implements KeyListener{
          fileName= "maze.txt";
       }
       else { fileName = args[0];
-      }
-   
+           }
       readFile(mazeArray, fileName);
       placePlayer(mazeArray);
    
