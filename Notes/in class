@@ -1,1 +1,10 @@
 
+SodaBottle(double capacity){
+this.capacity =capacity; //look for capacity in an upper instance
+}
+immutable?
+mutators -SetCapacity
+
+accessor-GetCapacity
+ DRY
+ Single use purpose
