@@ -1,5 +1,6 @@
 package edu.jalc.inclass.bottle;
-
+//To run the tests, you need the enable assertions flag, so it should be
+//java -ea edu.jalc.inclass.bottle.SodaBottleTest
 public class SodaBottleTest {
 
 	public void testGetCapacity(){
