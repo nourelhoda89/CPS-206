@@ -11,15 +11,15 @@ import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 
 public class MazeWithKey implements KeyListener{
-   final static int NUM_ROW = 5, //need to hande size for diff files
-                    NUM_COL = 10;
+   final static int NUM_ROW = 7, //need to hande size for diff files
+                    NUM_COL = 31;
    static char player = 'p',
                 clear = ' ',
                 wall = 'x',
                 finalPoint = 'f';
    static int yLoc = 1,
               xLoc = 1;
-              static boolean finish =false;
+   static boolean finish =false;
    static int  numberOfSteps = 0;
    static ArrayList<String> history = new ArrayList<>();
    static char[][] mazeArray = new char[NUM_ROW][NUM_COL];
@@ -34,7 +34,7 @@ public class MazeWithKey implements KeyListener{
          fileName= "maze.txt";
       }
       else { fileName = args[0];
-           }
+      }
       readFile(mazeArray, fileName);
       placePlayer(mazeArray);
    
@@ -237,7 +237,7 @@ public class MazeWithKey implements KeyListener{
       
          if (mazeArray[yLoc][xLoc+1]!= wall){
             if (mazeArray[yLoc][xLoc+1]== finalPoint){
-System.exit(0);
+               System.exit(0);
             }
             else {
                xLoc = right(mazeArray); 
@@ -256,7 +256,7 @@ System.exit(0);
                //finish= ifFinished ();
             }
             else {
-               xLoc = right(mazeArray); 
+               xLoc =left(mazeArray); 
             }
          }
          else{
@@ -271,7 +271,7 @@ System.exit(0);
                //finish= ifFinished ();
             }
             else {
-               yLoc = right(mazeArray); 
+               yLoc = down(mazeArray); 
             }
          }
          else{
@@ -286,7 +286,7 @@ System.exit(0);
                //finish= ifFinished ();
             }
             else {
-               yLoc = right(mazeArray); 
+               yLoc = up(mazeArray); 
             }
          }
          else{
