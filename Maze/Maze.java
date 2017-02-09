@@ -1,21 +1,15 @@
-//Date:1/31/2017
+//Date:2/8/2017
 //Author: Nourelhoda Farhat
 //Purpose: A program that simulate a simple maze
 //**************************************************************
-
-
 import java.io.*;
 import java.util.*;
 
 public class Maze{
-   final static int NUM_ROW =5, //still need to handel size for diff files
-                    NUM_COL =10 ;
-   static char player = 'p',
-                clear = ' ',
-                wall = 'x',
-                finalPoint = 'f';
-   static int yLoc = 1,
-              xLoc = 1;
+
+   final static int NUM_ROW =7,NUM_COL =31 ;
+   static char player = 'p', clear = ' ', wall = 'x', finalPoint = 'f';
+   static int yLoc = 1, xLoc = 1;
    static boolean finish = false;
    static int  numberOfSteps = 0;
    static ArrayList<String> history = new ArrayList<>();
@@ -32,14 +26,17 @@ public class Maze{
       readFile(fileName);
       placePlayer();
    
-      //test to see maze
+      /*
+      //will delete later
       for (int row = 0; row < NUM_ROW; row++){
          System.out.println();
       
          for (int col = 0; col < NUM_COL; col++) {
             System.out.print(mazeArray[row][col]);
          }
-      }
+         }
+         */
+      
       play();
    
    }//end of main method
@@ -52,7 +49,7 @@ public class Maze{
       try{
       
          Scanner inputFile = new Scanner(charactersFile);
-         for (int row = 0;inputFile.hasNext(); row++) {
+         for (int row = 0;row< mazeArray.length; row++) {
               
             if (inputFile.hasNext()) {
                line = inputFile.nextLine();
@@ -125,8 +122,10 @@ public class Maze{
    }//end play method
    
    public static ArrayList<String> checkForOpenTiles(){
+   
       ArrayList<String> availableDirections = new ArrayList<>();
-    
+      
+       
       if (mazeArray[yLoc][xLoc +1]!= wall){
          availableDirections.add("right");
       }
@@ -145,7 +144,7 @@ public class Maze{
    public static boolean isMoveLegal (String move){
       boolean legal =false;
      
-      if ( checkForOpenTiles().contains(move)|| move == "history"){
+      if ( checkForOpenTiles().contains(move)|| move.equals("history")){
          legal =true;
       }
       else {
