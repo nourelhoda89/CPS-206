@@ -7,14 +7,14 @@ import java.util.*;
 
 public class Maze{
 
-   final static int NUM_ROW =7,NUM_COL =31 ;
+   static int width , length;
    static char player = 'p', clear = ' ', wall = 'x', finalPoint = 'f';
-   static int yLoc = 1, xLoc = 1;
+   static int yLoc = 0, xLoc = 0;
    static boolean finish = false;
    static int  numberOfSteps = 0;
    static ArrayList<String> history = new ArrayList<>();
-   static  char[][] mazeArray = new char[NUM_ROW][NUM_COL];
-    
+   static  char[][] mazeArray = new char[width][length];
+
    public static void main(String... args)throws Exception{
    
       String fileName;
@@ -23,23 +23,24 @@ public class Maze{
       }
       else { fileName = args[0];
       }
+      preProcessArray(fileName);
       readFile(fileName);
-      placePlayer();
-   
-      /*
-      //will delete later
-      for (int row = 0; row < NUM_ROW; row++){
-         System.out.println();
-      
-         for (int col = 0; col < NUM_COL; col++) {
-            System.out.print(mazeArray[row][col]);
-         }
-         }
-         */
-      
+      placePlayer();//
       play();
    
    }//end of main method
+   
+   public static  void preProcessArray ( String fileName)throws Exception {
+    
+      String  line = null;
+      BufferedReader br = new BufferedReader(new FileReader(fileName));
+      while ((line = br.readLine()) != null) {
+         width++;//working
+         length =line.length();//working
+      //test to see maze
+         System.out.println(line);
+      }
+   }
 
    public static void readFile( String fileName) throws Exception {
    
@@ -49,14 +50,14 @@ public class Maze{
       try{
       
          Scanner inputFile = new Scanner(charactersFile);
-         for (int row = 0;row< mazeArray.length; row++) {
-              
+         for (int row = 0; row< mazeArray.length; row++) {
+         
             if (inputFile.hasNext()) {
                line = inputFile.nextLine();
-               
-               
+            
+            
                for (int col = 0; col < mazeArray[row].length; col++)
-                  mazeArray[row][col] = line.charAt(col);         
+                  mazeArray[row][col] = line.charAt(col);
             }
          }
          inputFile.close();
@@ -68,64 +69,67 @@ public class Maze{
    }//end read file
 
    public static void placePlayer(){
+   
       int counter = 0;//to insure this is not an infinit loop,in case there were no free areas in the maze.
+      
       do{
          counter++;
          Random randomNumbers = new Random();
-         yLoc = randomNumbers.nextInt(NUM_ROW);
-         xLoc = randomNumbers.nextInt(NUM_COL);
-      }while (mazeArray[yLoc][xLoc]== wall || mazeArray[yLoc][xLoc]== finalPoint || counter < 1000);
-      mazeArray[yLoc][xLoc]= player;
+         yLoc = randomNumbers.nextInt(width);
+         xLoc = randomNumbers.nextInt(length);
+         
+      }while(mazeArray[yLoc][xLoc]== wall || mazeArray[yLoc][xLoc]== finalPoint);
+       mazeArray[yLoc][xLoc]= player;
    }//end of placePlayer method
 
    public static void play(){
    
       Scanner keyboard = new Scanner(System.in);
-      while (!finish){ 
+      while (!finish){
       
-         System.out.println(" \n\nWhat is your next move?" 
+         System.out.println(" \n\nWhat is your next move?"
                          +"\n(you can enter history to see your previous steps).");
          System.out.println(checkForOpenTiles());
          String move = keyboard.nextLine();
-         move = move.toLowerCase(); 
+         move = move.toLowerCase();
          boolean legal = isMoveLegal(move);
-            
+      
          if (legal){
          
             switch (move){
             
                case  ("right"):
-                  xLoc = right(); 
+                  xLoc = right();
                   break;
-               
+            
                case ( "left"):
                   xLoc = left();
                
                   break;
-               
+            
                case  ("up"):
                   yLoc = up();
                   break;
-               
+            
                case ("down"):
                   yLoc = down();
                   break;
-             
+            
                case ("history"):
                   System.out.println(history);
                   break;
             }
-         } 
+         }
          else{
             System.out.println("\n please choose one of the options above");}
       }
    }//end play method
-   
+
    public static ArrayList<String> checkForOpenTiles(){
    
       ArrayList<String> availableDirections = new ArrayList<>();
-      
-       
+   
+   
       if (mazeArray[yLoc][xLoc +1]!= wall){
          availableDirections.add("right");
       }
@@ -140,10 +144,10 @@ public class Maze{
       }
       return availableDirections;
    }
-   
+
    public static boolean isMoveLegal (String move){
       boolean legal =false;
-     
+   
       if ( checkForOpenTiles().contains(move)|| move.equals("history")){
          legal =true;
       }
@@ -152,7 +156,7 @@ public class Maze{
       }
       return legal;
    }
-   
+
    public static int right(){
    
       if (mazeArray[yLoc][xLoc+1]==finalPoint){
@@ -166,7 +170,7 @@ public class Maze{
          xLoc++;
       }
       return xLoc;
-      
+   
    }
    public static int left(){
       if (mazeArray[yLoc][xLoc-1]==finalPoint){
@@ -181,10 +185,10 @@ public class Maze{
          xLoc--;
       }
       return xLoc;
-      
+   
    }
    public static int up (){
-      
+   
       if (mazeArray[yLoc-1][xLoc]==finalPoint){
          complete();
       }
@@ -196,10 +200,10 @@ public class Maze{
          yLoc--;
       }
       return yLoc;
-     
+   
    }
    public static  int down(){
-      
+   
       if (mazeArray[yLoc+1][xLoc]==finalPoint){
          complete();
       }
@@ -211,13 +215,13 @@ public class Maze{
          yLoc++;
       }
       return yLoc;
-      
+   
    }
    public static void complete(){
       numberOfSteps++;
       System.out.println("\n Oh WOW your not a loser after all!"
                         +"\n You solved the maze in " +numberOfSteps+" steps.");
-      finish= true; //could work without it 
+      finish= true; //could work without it
       System.exit(0);
    }
 }
