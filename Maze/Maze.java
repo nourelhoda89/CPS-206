@@ -7,42 +7,65 @@ import java.util.*;
 
 public class Maze{
 
-   static int width , length;
-   static char player = 'p', clear = ' ', wall = 'x', finalPoint = 'f';
-   static int yLoc = 0, xLoc = 0;
-   static boolean finish = false;
-   static int  numberOfSteps = 0;
-   static ArrayList<String> history = new ArrayList<>();
-   static  char[][] mazeArray = new char[width][length];
-
+   
+   public static char player = 'p', clear = ' ', wall = 'x', finalPoint = 'f';
+   public static int yLoc = 0, xLoc = 0;
+   public static boolean finish = false;
+   public static int  numberOfSteps = 0;
+   public static ArrayList<String> history = new ArrayList<>();
+   
    public static void main(String... args)throws Exception{
    
+      int width =0, length=0;
       String fileName;
+      
       if(args.length == 0){
          fileName= "maze.txt";
       }
       else { fileName = args[0];
       }
-      preProcessArray(fileName);
-      readFile(fileName);
-      placePlayer();//
-      play();
+      
+      width= preProcessArrayWidth(fileName,width);
+      length= preProcessArrayLength (fileName,length);
+      char[][] mazeArray = new char[width][length];
+      readFile(fileName,mazeArray);
+      placePlayer(mazeArray);
+      
+    
+      //test to see maze with first player position
+      for (int row = 0; row < width; row++){
+         System.out.println();
+
+         for (int col = 0; col < length; col++) {
+            System.out.print(mazeArray[row][col]);
+         }
+         }
+         
+      play(mazeArray);
    
    }//end of main method
    
-   public static  void preProcessArray ( String fileName)throws Exception {
+   public static  int preProcessArrayWidth ( String fileName,int width)throws Exception {
     
       String  line = null;
       BufferedReader br = new BufferedReader(new FileReader(fileName));
       while ((line = br.readLine()) != null) {
          width++;//working
-         length =line.length();//working
-      //test to see maze
-         System.out.println(line);
       }
+      return width;
+   }
+   
+   public static  int preProcessArrayLength ( String fileName,int length)throws Exception {
+    
+      String  line = null;
+      BufferedReader br = new BufferedReader(new FileReader(fileName));
+      while ((line = br.readLine()) != null) {
+         length =line.length();//working
+      }
+      return length;
    }
 
-   public static void readFile( String fileName) throws Exception {
+   public static void readFile( String fileName, char[][] mazeArray) throws Exception {
    
       String line;
       File charactersFile = new File(fileName);
@@ -54,8 +77,6 @@ public class Maze{
          
             if (inputFile.hasNext()) {
                line = inputFile.nextLine();
-            
-            
                for (int col = 0; col < mazeArray[row].length; col++)
                   mazeArray[row][col] = line.charAt(col);
             }
@@ -68,51 +89,53 @@ public class Maze{
       System.out.println("\n\n Welcome to The Maze!!!\n\n");
    }//end read file
 
-   public static void placePlayer(){
+   public static void placePlayer(char[][] mazeArray){
    
       int counter = 0;//to insure this is not an infinit loop,in case there were no free areas in the maze.
       
-      do{
+      while(mazeArray[yLoc][xLoc]== wall || mazeArray[yLoc][xLoc]== finalPoint || counter <1000){
          counter++;
-         Random randomNumbers = new Random();
-         yLoc = randomNumbers.nextInt(width);
-         xLoc = randomNumbers.nextInt(length);
          
-      }while(mazeArray[yLoc][xLoc]== wall || mazeArray[yLoc][xLoc]== finalPoint);
-       mazeArray[yLoc][xLoc]= player;
+         Random randomNumbers = new Random();
+        
+         yLoc =(int)(Math.random() * mazeArray.length);
+         xLoc =(int)(Math.random() * mazeArray[0].length);
+      
+      }
+      mazeArray[yLoc][xLoc]=player;
    }//end of placePlayer method
 
-   public static void play(){
+   public static void play(char[][] mazeArray){
    
       Scanner keyboard = new Scanner(System.in);
       while (!finish){
       
          System.out.println(" \n\nWhat is your next move?"
                          +"\n(you can enter history to see your previous steps).");
-         System.out.println(checkForOpenTiles());
+         System.out.println(checkForOpenTiles( mazeArray));
          String move = keyboard.nextLine();
          move = move.toLowerCase();
-         boolean legal = isMoveLegal(move);
+         boolean legal = isMoveLegal(move,mazeArray);
       
          if (legal){
          
             switch (move){
             
                case  ("right"):
-                  xLoc = right();
+                  xLoc = right(mazeArray);
                   break;
             
                case ( "left"):
-                  xLoc = left();
+                  xLoc = left(mazeArray);
                
                   break;
             
                case  ("up"):
-                  yLoc = up();
+                  yLoc = up(mazeArray);
                   break;
             
                case ("down"):
-                  yLoc = down();
+                  yLoc = down(mazeArray);
                   break;
             
                case ("history"):
@@ -125,7 +148,7 @@ public class Maze{
       }
    }//end play method
 
-   public static ArrayList<String> checkForOpenTiles(){
+   public static ArrayList<String> checkForOpenTiles(char[][] mazeArray){
    
       ArrayList<String> availableDirections = new ArrayList<>();
    
@@ -145,10 +168,10 @@ public class Maze{
       return availableDirections;
    }
 
-   public static boolean isMoveLegal (String move){
+   public static boolean isMoveLegal (String move,char[][] mazeArray){
       boolean legal =false;
    
-      if ( checkForOpenTiles().contains(move)|| move.equals("history")){
+      if ( checkForOpenTiles(mazeArray).contains(move)|| move.equals("history")){
          legal =true;
       }
       else {
@@ -157,7 +180,7 @@ public class Maze{
       return legal;
    }
 
-   public static int right(){
+   public static int right(char[][] mazeArray){
    
       if (mazeArray[yLoc][xLoc+1]==finalPoint){
          complete();
@@ -172,7 +195,7 @@ public class Maze{
       return xLoc;
    
    }
-   public static int left(){
+   public static int left(char[][] mazeArray){
       if (mazeArray[yLoc][xLoc-1]==finalPoint){
          complete();
       }
@@ -187,7 +210,7 @@ public class Maze{
       return xLoc;
    
    }
-   public static int up (){
+   public static int up (char[][] mazeArray){
    
       if (mazeArray[yLoc-1][xLoc]==finalPoint){
          complete();
@@ -202,7 +225,7 @@ public class Maze{
       return yLoc;
    
    }
-   public static  int down(){
+   public static  int down(char[][] mazeArray){
    
       if (mazeArray[yLoc+1][xLoc]==finalPoint){
          complete();
