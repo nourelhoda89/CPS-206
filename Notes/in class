@@ -6,5 +6,48 @@ immutable?
 mutators -SetCapacity
 
 accessor-GetCapacity
- DRY
- Single use purpose
+private classes
+
+ DRY (don't repeat yourself)
+
+  # Single use purpose (organization)
+ ....................................
+ String typeOfLiquid; bad
+
+ Content contents // good ,don't put string for content
+
+ Book{
+ Preface Preface
+ Chapter chapter
+ String title //sequence of characters
+ }
+
+ # Call private class
+ ....................
+ ## private inner class
+
+ public class Dog{
+
+ private DogCollar dogCollar =new DogCollar();
+
+ private class DogCollar{
+
+ }
+ }
+ #Static
+ .......
+ public class Dog{
+ private String name;
+ public dog (String name){
+ this.name =name;
+ }
+
+ }
+ new ==> instance===> lower case let us know its a instance not class
+ static Singletons
+
+ call main method Dog.main(...)
+ public final Static == constant
+ closed open principle
+
+ builder pattern
