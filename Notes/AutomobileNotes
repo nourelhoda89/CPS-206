@@ -1,0 +1,63 @@
+class Automobile{
+Body body;
+Driveline driveline;
+Engine engine;
+Suspension suspension;
+String make;
+String model;
+String trim;
+}
+
+
+//pass null for PBI and Tell no package for some cars
+
+interface DodgeRamBuilderInterface{
+
+ DodgeRamBuilderInterface askForPowertrain(PrompterBuilderInterface);
+ DodgeRamBuilderInterface askForPaintColorAndInterior(PrompterBuilderInterface);
+ DodgeRamBuilderInterface askForPackages(PrompterBuilderInterface);
+ DodgeRamBuilderInterface askForOption(PrompterBuilderInterface);
+ Automobile build();
+ }
+ 
+ PrompterBuilderInterface implements  TerminalPrompter {
+ 
+ }
+ 
+ TerminalPrompter { 
+ Askable;
+ Tellable;
+ }
+ 
+ 
+ interface Askable{
+   ask();
+   }
+   
+ interface Tellabale{
+   tell();
+   }
+   
+   
+   
+
+build(){
+ 
+ return new Automobile("Dodge", "fake", "Car")
+ }
+ 
+  
+ //will print: 
+Make: Dodge
+Model: fake
+Trim:Car
+
+Body:
+...
+
+//for the trucks make it ask right away for 4*4 or 4*2 and cab and bed
+ in the constructor
+ 
+  new Ram1500..();
+
+
